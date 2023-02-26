@@ -61,6 +61,10 @@
                 <configuration>
                     <pactBrokerUrl>https://rajatmishra.pactflow.io/</pactBrokerUrl>
                     <pactBrokerToken>ev2_6hqwATAlBVoEW-SqJw</pactBrokerToken>
+                    <projectVersion>1.0.0</projectVersion>
+<!--                    <pactBrokerUrl>http://localhost:9292/</pactBrokerUrl>-->
+<!--                    <pactDirectory>src/test/resources/contracts</pactDirectory>-->
+<!--                    <projectVersion>1.0.0</projectVersion>-->
                 </configuration>
             </plugin>
         </plugins>

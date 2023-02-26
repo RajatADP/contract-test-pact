@@ -16,7 +16,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -35,11 +34,6 @@ public class PactConsumerTest {
     @BeforeAll
     public static void config() {
         System.setProperty("pact.writer.overwrite", "true");
-    }
-
-    @BeforeEach
-    void setup() {
-        System.setProperty("pact.verifier.publishResults", "true");
     }
 
     private CreditCheck creditCheck;
@@ -69,6 +63,7 @@ public class PactConsumerTest {
                 .toPact();
     }
 
+
     @Test
     @PactTestFor(pactMethod = "pact_getCreditCheckResponse")
     @MockServerConfig(hostInterface = "localhost", port = "1234")
@@ -82,32 +77,6 @@ public class PactConsumerTest {
 
         String expectedJson = "{\n" +
                 "\"status\": \"GRANTED\"\n" +
-                "}";
-
-        CreditCardResponse response = creditCardController.applyCC(creditCheck);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String actualJson = mapper.writeValueAsString(response);
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.STRICT_ORDER);
-    }
-
-
-    //@Test
-    @PactTestFor(pactMethod = "pact_getCreditCheckResponseNotFound")
-    @MockServerConfig(hostInterface = "localhost", port = "1234")
-    public void testCreditCardNotFound(MockServer mockServer) throws JsonProcessingException, JSONException {
-        CreditCardController creditCardController = new CreditCardController();
-        creditCardController.setBaseURL(mockServer.getUrl());
-
-        creditCheck = new CreditCheck();
-        creditCheck.setCardType("Standard");
-        creditCheck.setCitizenNumber(11);
-
-        String expectedJson = "{\n" +
-                "    \"timestamp\": \"2023-02-09T16:50:55.208+00:00\",\n" +
-                "    \"status\": 404,\n" +
-                "    \"error\": \"Not Found\",\n" +
-                "    \"path\": \"/credit-card\"\n" +
                 "}";
 
         CreditCardResponse response = creditCardController.applyCC(creditCheck);

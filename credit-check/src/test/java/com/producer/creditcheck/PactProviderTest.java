@@ -8,6 +8,7 @@ import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.StateChangeAction;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerAuth;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,19 +20,22 @@ import org.springframework.boot.web.server.LocalServerPort;
 //@PactFolder("src/main/java/pacts") //pact on local repo
 @PactBroker(url = "https://rajatmishra.pactflow.io/",
         authentication = @PactBrokerAuth(token = "ev2_6hqwATAlBVoEW-SqJw"))
+//@PactBroker(url = "http://localhost:9292", providerTags = "latest")
 
 public class PactProviderTest {
 
     @LocalServerPort
     public int port;
 
+    @BeforeAll
+    static void enablePublishingPact() {
+        System.setProperty("pact.verifier.publishResults", "true");
+    }
+
     @BeforeEach
     public void setup(PactVerificationContext context) {
-
         context.setTarget(new HttpTestTarget("localhost", port)
         );
-        System.setProperty("pact_do_not_track", "true");
-        System.setProperty("pact.verifier.publishResults", "true");
     }
 
     @TestTemplate
