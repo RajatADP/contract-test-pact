@@ -18,10 +18,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Provider("creditCheck")
 //@PactFolder("src/main/java/pacts") //pact on local repo
-@PactBroker(url = "https://rajatmishra.pactflow.io/",
-        authentication = @PactBrokerAuth(token = "ev2_6hqwATAlBVoEW-SqJw"))
-//@PactBroker(url = "http://localhost:9292", providerTags = "latest")
-
+//@PactBroker(url = "https://rajatmishra.pactflow.io/",
+//        authentication = @PactBrokerAuth(token = "ev2_6hqwATAlBVoEW-SqJw"))
+@PactBroker(url = "http://localhost:9292", providerTags = "latest")
 public class PactProviderTest {
 
     @LocalServerPort
@@ -30,6 +29,17 @@ public class PactProviderTest {
     @BeforeAll
     static void enablePublishingPact() {
         System.setProperty("pact.verifier.publishResults", "true");
+        //tags to test. Other consumer tags will be ignored
+        System.setProperty("pactbroker.consumerversionselectors.tags", "master");
+        // provider version to use when publishing verification results.
+        System.setProperty("pact.provider.version", "1.0.0");
+        //
+        System.setProperty("pact.provider.tag", "prod");
+
+        System.setProperty("pact.provider.branch", "master");
+
+
+
     }
 
     @BeforeEach
